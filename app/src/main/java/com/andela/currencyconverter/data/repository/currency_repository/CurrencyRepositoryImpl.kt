@@ -1,6 +1,7 @@
 package com.andela.currencyconverter.data.repository.currency_repository
 
 import androidx.annotation.WorkerThread
+import com.andela.currencyconverter.adapter.BindableSpinnerAdapter
 import com.andela.currencyconverter.data.DataState
 import com.andela.currencyconverter.data.remote.responses.currency_converter.CurrencyConvertedResponse
 import com.andela.currencyconverter.data.remote.responses.currency_symbols.CurrencySymbolsResponse
@@ -71,8 +72,7 @@ class CurrencyRepositoryImpl @Inject constructor(
        val SUCCESS_KEY = "success"
        val SYMBOLS_KEYS = "symbols"
 
-        var map: HashMap<String, String>
-        val currencyList: ArrayList<HashMap<String, String>> = ArrayList()
+        val currencyList: ArrayList<BindableSpinnerAdapter.SpinnerItem> = ArrayList()
         var success = false
 
         json?.let {
@@ -80,10 +80,7 @@ class CurrencyRepositoryImpl @Inject constructor(
             val result = json.getJSONObject(SYMBOLS_KEYS)
 
             result.keys().forEach { keyStr ->
-                map = HashMap()
-                val keyValue: Any = result.get(keyStr)
-                map[keyStr] = keyValue.toString()
-                currencyList.add(map)
+                currencyList.add(BindableSpinnerAdapter.SpinnerItem(keyStr))
             }
         }
 

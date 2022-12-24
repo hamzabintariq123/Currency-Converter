@@ -35,6 +35,7 @@ class CurrencyConverterActivity : AppCompatActivity() {
             this@CurrencyConverterActivity, R.layout.activity_main)
 
         binding.lifecycleOwner = this
+        binding.viewModel = symbolsViewModel
 
         symbolsViewModel.getCurrencySymbols()
         initObservations()
@@ -64,27 +65,5 @@ class CurrencyConverterActivity : AppCompatActivity() {
             Log.d("res",it.result.toString())
         }
 
-        symbolsViewModel.uiStateLiveData.observe(this) { state ->
-            when (state) {
-                is SymbolsLoadingState -> {
-                    binding.progressLogin.visible()
-                }
-
-                is SymbolsContentState -> {
-                    binding.progressLogin.gone()
-                }
-
-                is SymbolsErrorState -> {
-                    binding.progressLogin.gone()
-                    binding.root.showSnack(state.message)
-                }
-
-                else->{}
-            }
-        }
-
-        symbolsViewModel.currencySymbolsLiveData.observe(this){
-            Log.d("res",it.symbols.toString())
-        }
     }
 }

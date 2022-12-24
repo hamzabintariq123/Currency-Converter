@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andela.currencyconverter.adapter.BindableSpinnerAdapter
+import com.andela.currencyconverter.adapter.BindableSpinnerAdapter.*
 import com.andela.currencyconverter.data.DataState
 import com.andela.currencyconverter.data.remote.responses.currency_symbols.CurrencySymbolsResponse
 import com.andela.currencyconverter.data.usecase.converter.CurrencySymbolsUsecase
@@ -16,6 +18,10 @@ import kotlinx.coroutines.launch
 class CurrencySymbolsViewModel @Inject constructor(
     private val currencySymbolsUsecase: CurrencySymbolsUsecase
 ) : ViewModel() {
+
+    val items : MutableLiveData<List<SpinnerItem>> = MutableLiveData()
+    var selectedToItem : SpinnerItem = SpinnerItem("")
+    var selectedForItem : SpinnerItem = SpinnerItem("")
 
     private var _uiState = MutableLiveData<CurrencySymbolsUiState>()
     var uiStateLiveData: LiveData<CurrencySymbolsUiState> = _uiState
@@ -31,6 +37,7 @@ class CurrencySymbolsViewModel @Inject constructor(
                          is DataState.Success -> {
                              _uiState.postValue(ContentState)
                              _currencySymbolsdResponse.postValue(dataState.data)
+                             items.postValue(dataState.data.symbols.currencyList)
                          }
 
                          is DataState.Error -> {

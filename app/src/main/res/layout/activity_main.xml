@@ -5,16 +5,74 @@
     <data>
         <variable
             name="viewModel"
-            type="com.andela.currencyconverter.ui.currency_converter.converter.CurrencyConverterViewModel" />
+            type="com.andela.currencyconverter.ui.currency_converter.symbols.CurrencySymbolsViewModel" />
+
+        <variable
+            name="binding_adapter"
+            type="com.andela.currencyconverter.adapter.BindableSpinnerAdapter" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_80sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/ic_convert"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/convertFrom"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_80sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/button"
+            android:adapter= "@{binding_adapter}"
+            spinnerItems="@{viewModel.items}"
+            selectedSpinnerItem = "@={viewModel.selectedForItem}"/>
+
+        <Spinner
+            android:id="@+id/convertTo"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_80sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button"
+            spinnerItems="@{viewModel.items}"
+            selectedSpinnerItem = "@={viewModel.selectedToItem}"/>
+
+        <EditText
+            android:id="@+id/convertFromEdt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:hint="@string/enter_currency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/convertFrom"
+            app:layout_constraintEnd_toStartOf="@+id/button"/>
+
+        <EditText
+            android:id="@+id/convertToEdt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:hint="@string/enter_currency"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/convertTo"
+            app:layout_constraintStart_toEndOf="@+id/button"/>
+
         <ProgressBar
             android:id="@+id/progressLogin"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/_80sdp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

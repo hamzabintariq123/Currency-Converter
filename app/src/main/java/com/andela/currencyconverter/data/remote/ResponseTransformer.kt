@@ -15,6 +15,8 @@
 */
 package com.serengeti.getihub.data.remote
 
+import com.andela.currencyconverter.data.remote.ApiResponse
+
 /**
  * A suspend function for handling success response.
  */

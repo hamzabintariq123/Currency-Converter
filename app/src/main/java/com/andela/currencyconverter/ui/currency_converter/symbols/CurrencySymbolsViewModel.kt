@@ -1,36 +1,36 @@
-package com.andela.currencyconverter.ui
+package com.andela.currencyconverter.ui.currency_converter.symbols
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andela.currencyconverter.data.DataState
-import com.andela.currencyconverter.data.remote.responses.currency_converter.CurrencyConvertedResponse
-import com.andela.currencyconverter.data.usecase.ConvertCurrencyUsecase
+import com.andela.currencyconverter.data.remote.responses.currency_symbols.CurrencySymbolsResponse
+import com.andela.currencyconverter.data.usecase.converter.CurrencySymbolsUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class CurrencyConverterViewModel @Inject constructor(
-    private val convertCurrencyUsecase: ConvertCurrencyUsecase
+class CurrencySymbolsViewModel @Inject constructor(
+    private val currencySymbolsUsecase: CurrencySymbolsUsecase
 ) : ViewModel() {
 
-    private var _uiState = MutableLiveData<CurrencyConverterUiState>()
-    var uiStateLiveData: LiveData<CurrencyConverterUiState> = _uiState
+    private var _uiState = MutableLiveData<CurrencySymbolsUiState>()
+    var uiStateLiveData: LiveData<CurrencySymbolsUiState> = _uiState
 
-    private var _currencyConvertedResponse = MutableLiveData<CurrencyConvertedResponse>()
-    var currencyConvertedLiveData: LiveData<CurrencyConvertedResponse> = _currencyConvertedResponse
+    private var _currencySymbolsdResponse = MutableLiveData<CurrencySymbolsResponse>()
+    var currencySymbolsLiveData: LiveData<CurrencySymbolsResponse> = _currencySymbolsdResponse
 
-    fun convertCurrency() {
+    fun getCurrencySymbols() {
              _uiState.postValue(LoadingState)
              viewModelScope.launch {
-                 convertCurrencyUsecase().collect { dataState ->
+                 currencySymbolsUsecase().collect { dataState ->
                      when (dataState) {
                          is DataState.Success -> {
                              _uiState.postValue(ContentState)
-                             _currencyConvertedResponse.postValue(dataState.data)
+                             _currencySymbolsdResponse.postValue(dataState.data)
                          }
 
                          is DataState.Error -> {

@@ -3,6 +3,8 @@ package com.andela.currencyconverter.data.repository.currency_repository
 import androidx.annotation.WorkerThread
 import com.andela.currencyconverter.data.DataState
 import com.andela.currencyconverter.data.remote.responses.currency_converter.CurrencyConvertedResponse
+import com.andela.currencyconverter.data.remote.responses.currency_symbols.CurrencySymbolsResponse
+import com.andela.currencyconverter.data.remote.responses.currency_symbols.Symbols
 import com.andela.currencyconverter.data.remote.services.CurrencyApiService
 import com.andela.currencyconverter.utils.StringUtils
 import com.serengeti.getihub.data.remote.onExceptionSuspend
@@ -11,6 +13,7 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import org.json.JSONObject
 
 class CurrencyRepositoryImpl @Inject constructor(
     private val stringUtils: StringUtils,
@@ -21,12 +24,12 @@ class CurrencyRepositoryImpl @Inject constructor(
     override suspend fun convertCurrency(
     ): Flow<DataState<CurrencyConvertedResponse>> {
         return flow {
-            apiService.convertCurrency(to= "USD", from = "PKR", amount = 10).apply {
+            apiService.convertCurrency(to = "USD", from = "PKR", amount = 10).apply {
                 this.onSuccessSuspend {
                     data?.let {
-                        if(!data.success){
+                        if (!data.success) {
                             emit(DataState.Error(data.error!!.info))
-                        }else{
+                        } else {
                             emit(DataState.success(it))
                         }
                     }
@@ -41,5 +44,49 @@ class CurrencyRepositoryImpl @Inject constructor(
                 }
             }
         }
+    }
+
+    override suspend fun getCurrencySymbols(): Flow<DataState<CurrencySymbolsResponse>> {
+        return flow {
+            apiService.currencySymbols().apply {
+                this.onSuccessSuspend {
+                    data?.let {
+                        val obj = response.body()?.string()?.let { it1 -> JSONObject(it1) }
+                        emit(DataState.success(parseSymbolsJson(obj)))
+                    }
+                }
+                // handle the case when the API request gets an error response.
+                // e.g. internal server error.
+            }.onExceptionSuspend {
+                if (this.exception is IOException) {
+                    emit(DataState.error(stringUtils.noNetworkErrorMessage()))
+                } else {
+                    emit(DataState.error(stringUtils.somethingWentWrong()))
+                }
+            }
+        }
+    }
+
+    private fun parseSymbolsJson(json: JSONObject?): CurrencySymbolsResponse {
+       val SUCCESS_KEY = "success"
+       val SYMBOLS_KEYS = "symbols"
+
+        var map: HashMap<String, String>
+        val currencyList: ArrayList<HashMap<String, String>> = ArrayList()
+        var success = false
+
+        json?.let {
+            success = json.getBoolean(SUCCESS_KEY)
+            val result = json.getJSONObject(SYMBOLS_KEYS)
+
+            result.keys().forEach { keyStr ->
+                map = HashMap()
+                val keyValue: Any = result.get(keyStr)
+                map[keyStr] = keyValue.toString()
+                currencyList.add(map)
+            }
+        }
+
+        return CurrencySymbolsResponse(success, null, Symbols(currencyList))
     }
 }

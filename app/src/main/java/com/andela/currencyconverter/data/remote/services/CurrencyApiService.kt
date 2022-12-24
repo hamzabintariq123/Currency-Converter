@@ -1,7 +1,8 @@
 package com.andela.currencyconverter.data.remote.services
 
 import com.andela.currencyconverter.data.remote.responses.currency_converter.CurrencyConvertedResponse
-import com.serengeti.getihub.data.remote.ApiResponse
+import com.andela.currencyconverter.data.remote.ApiResponse
+import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface CurrencyApiService {
@@ -12,6 +13,10 @@ interface CurrencyApiService {
         @Query("from") from: String,
         @Query("amount") amount: Int? = null,
     ): ApiResponse<CurrencyConvertedResponse>
+
+    @GET("fixer/symbols")
+    suspend fun currencySymbols(
+    ): ApiResponse<ResponseBody>
 
 
     companion object {

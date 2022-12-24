@@ -1,4 +1,4 @@
-package com.andela.currencyconverter.data.usecase
+package com.andela.currencyconverter.data.usecase.converter
 
 import com.andela.currencyconverter.data.repository.currency_repository.CurrencyRepository
 import javax.inject.Inject

@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.serengeti.getihub.data.remote
+package com.andela.currencyconverter.data.remote
 
 import retrofit2.Response
 

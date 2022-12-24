@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.andela.currencyconverter.ui.CurrencyConverterViewModel" />
+            type="com.andela.currencyconverter.ui.currency_converter.converter.CurrencyConverterViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,4 +1,4 @@
-package com.andela.currencyconverter.data.remote.responses.currency_converter
+package com.andela.currencyconverter.data.remote.responses
 
 data class Error(
     val code: Int,

@@ -29,8 +29,8 @@ class CurrencySymbolsViewModel @Inject constructor(
     private var _uiState = MutableLiveData<CurrencySymbolsUiState>()
     var uiStateLiveData: LiveData<CurrencySymbolsUiState> = _uiState
 
-    private var _currencySymbolsdResponse = MutableLiveData<CurrencySymbolsResponse>()
-    var currencySymbolsLiveData: LiveData<CurrencySymbolsResponse> = _currencySymbolsdResponse
+    private var _currencySymbolsResponse = MutableLiveData<CurrencySymbolsResponse>()
+    var currencySymbolsLiveData: LiveData<CurrencySymbolsResponse> = _currencySymbolsResponse
 
     fun getCurrencySymbols() {
         _uiState.postValue(LoadingState)
@@ -39,7 +39,7 @@ class CurrencySymbolsViewModel @Inject constructor(
                 when (dataState) {
                     is DataState.Success -> {
                         _uiState.postValue(ContentState)
-                        _currencySymbolsdResponse.postValue(dataState.data)
+                        _currencySymbolsResponse.postValue(dataState.data)
                         items.postValue(dataState.data.symbols.currencyList)
                     }
 

@@ -30,7 +30,7 @@ class NetworkApiModule {
                 val newRequest =
                     request.newBuilder()
                         .addHeader("Content-Type", "application/json")
-                        .addHeader("apikey", AppConstants.API.API_KEY)
+                        .addHeader("apikey", BuildConfig.api_key)
                 chain.proceed(newRequest.build())
             }.also { client ->
                 if (BuildConfig.DEBUG) {

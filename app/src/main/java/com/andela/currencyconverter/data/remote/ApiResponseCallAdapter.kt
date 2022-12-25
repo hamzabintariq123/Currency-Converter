@@ -15,6 +15,7 @@
 */
 package com.serengeti.getihub.data.remote
 
+import com.andela.currencyconverter.data.remote.ApiResponse
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.Call

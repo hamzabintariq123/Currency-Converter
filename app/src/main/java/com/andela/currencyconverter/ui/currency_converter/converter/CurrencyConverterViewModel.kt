@@ -1,4 +1,4 @@
-package com.andela.currencyconverter.ui
+package com.andela.currencyconverter.ui.currency_converter.converter
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andela.currencyconverter.data.DataState
 import com.andela.currencyconverter.data.remote.responses.currency_converter.CurrencyConvertedResponse
-import com.andela.currencyconverter.data.usecase.ConvertCurrencyUsecase
+import com.andela.currencyconverter.data.usecase.converter.ConvertCurrencyUsecase
+import com.andela.currencyconverter.data.usecase.converter.CurrencySymbolsUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collect

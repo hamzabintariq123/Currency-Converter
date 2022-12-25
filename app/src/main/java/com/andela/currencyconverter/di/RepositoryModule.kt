@@ -1,4 +1,4 @@
-package com.andela.currencyconverter.modules
+package com.andela.currencyconverter.di
 
 import android.app.Application
 import com.andela.currencyconverter.data.remote.services.CurrencyApiService

@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndelaCurrencyConverter">
         <activity
-            android:name=".ui.CurrencyConverterActivity"
+            android:name=".ui.currency_converter.CurrencyConverterActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

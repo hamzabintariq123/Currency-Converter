@@ -15,6 +15,7 @@
 */
 package com.serengeti.getihub.data.remote
 
+import com.andela.currencyconverter.data.remote.ApiResponse
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Retrofit

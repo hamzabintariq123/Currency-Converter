@@ -6,6 +6,6 @@ import com.andela.currencyconverter.data.remote.responses.currency_symbols.Curre
 import kotlinx.coroutines.flow.Flow
 
 interface CurrencyRepository {
-    suspend fun convertCurrency(): Flow<DataState<CurrencyConvertedResponse>>
+    suspend fun convertCurrency(from : String, to : String, amount : Double): Flow<DataState<CurrencyConvertedResponse>>
     suspend fun getCurrencySymbols(): Flow<DataState<CurrencySymbolsResponse>>
 }

@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.andela.currencyconverter.data.DataState
 import com.andela.currencyconverter.data.remote.responses.currency_converter.CurrencyConvertedResponse
 import com.andela.currencyconverter.data.usecase.converter.ConvertCurrencyUsecase
-import com.andela.currencyconverter.data.usecase.converter.CurrencySymbolsUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
@@ -18,27 +17,35 @@ class CurrencyConverterViewModel @Inject constructor(
     private val convertCurrencyUsecase: ConvertCurrencyUsecase
 ) : ViewModel() {
 
+    val resultFrom: MutableLiveData<Double> = MutableLiveData<Double>().apply { postValue(1.0) }
+    val resultTo: MutableLiveData<Double> = MutableLiveData<Double>().apply { postValue(1.0) }
+
     private var _uiState = MutableLiveData<CurrencyConverterUiState>()
     var uiStateLiveData: LiveData<CurrencyConverterUiState> = _uiState
 
     private var _currencyConvertedResponse = MutableLiveData<CurrencyConvertedResponse>()
     var currencyConvertedLiveData: LiveData<CurrencyConvertedResponse> = _currencyConvertedResponse
 
-    fun convertCurrency() {
-             _uiState.postValue(LoadingState)
-             viewModelScope.launch {
-                 convertCurrencyUsecase().collect { dataState ->
-                     when (dataState) {
-                         is DataState.Success -> {
-                             _uiState.postValue(ContentState)
-                             _currencyConvertedResponse.postValue(dataState.data)
-                         }
+    fun convertCurrency(from: String, to: String, amount: Double, isFrom: Boolean) {
+        _uiState.postValue(LoadingState)
+        viewModelScope.launch {
+            convertCurrencyUsecase(from, to, amount).collect { dataState ->
+                when (dataState) {
+                    is DataState.Success -> {
+                        _uiState.postValue(ContentState)
+                        _currencyConvertedResponse.postValue(dataState.data)
+                        if (!isFrom){
+                            resultFrom.postValue(dataState.data.result)
+                        }else{
+                            resultTo.postValue(dataState.data.result)
+                        }
+                    }
 
-                         is DataState.Error -> {
-                             _uiState.postValue(ErrorState(dataState.message))
-                         }
-                     }
-             }
-         }
+                    is DataState.Error -> {
+                        _uiState.postValue(ErrorState(dataState.message))
+                    }
+                }
+            }
+        }
     }
 }

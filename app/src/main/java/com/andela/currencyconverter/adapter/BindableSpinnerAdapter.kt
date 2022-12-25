@@ -1,6 +1,7 @@
 package com.andela.currencyconverter.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
@@ -64,7 +65,6 @@ class BindableSpinnerAdapter(
                     it
                 )
                 setCurrentSelection(spinner, selectedSpinnerItem)
-                setSpinnerListener(spinner, listener)
             }
         }
 
@@ -72,22 +72,6 @@ class BindableSpinnerAdapter(
         @JvmStatic
         fun getSelectedSpinnerItem(spinner: Spinner): SpinnerItem {
             return spinner.selectedItem as SpinnerItem
-        }
-
-        @JvmStatic
-        private fun setSpinnerListener(spinner: Spinner, listener: InverseBindingListener?) {
-            listener?.let {
-                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) = it.onChange()
-
-                    override fun onNothingSelected(adapterView: AdapterView<*>) = it.onChange()
-                }
-            }
         }
 
         @JvmStatic

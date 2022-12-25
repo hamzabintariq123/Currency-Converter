@@ -23,9 +23,12 @@ class CurrencyRepositoryImpl @Inject constructor(
 
     @WorkerThread
     override suspend fun convertCurrency(
+        from : String,
+        to : String,
+        amount : Double
     ): Flow<DataState<CurrencyConvertedResponse>> {
         return flow {
-            apiService.convertCurrency(to = "USD", from = "PKR", amount = 10).apply {
+            apiService.convertCurrency(to = to, from = from, amount = amount.toInt()).apply {
                 this.onSuccessSuspend {
                     data?.let {
                         if (!data.success) {

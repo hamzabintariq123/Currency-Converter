@@ -1,9 +1,13 @@
 package com.andela.currencyconverter.ui.details
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.andela.currencyconverter.R
+import com.andela.currencyconverter.adapter.HistoryRecyclerViewAdapter
+import com.andela.currencyconverter.data.db.model.ConverterData
 import com.andela.currencyconverter.databinding.ActivityDetailsBinding
 import com.andela.currencyconverter.ui.details.details.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,7 +19,9 @@ class DetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityDetailsBinding.inflate(layoutInflater)
+        binding = DataBindingUtil.setContentView(
+            this@DetailsActivity, R.layout.activity_details
+        )
 
         detailsViewModel.convertCurrency()
 
@@ -24,10 +30,16 @@ class DetailsActivity : AppCompatActivity() {
 
     private fun initObservations() {
         detailsViewModel.historyList.observe(this){
-            it?.forEach { data->
-                Log.d("res", data.result)
-            }
-
+          initHistoryDataRv(it)
         }
+    }
+
+    private fun initHistoryDataRv(converterDataList: MutableList<ConverterData>){
+        val recyclerViewHistory = binding.historyRv
+        val historyAdapter = HistoryRecyclerViewAdapter(converterDataList)
+
+        recyclerViewHistory.adapter = historyAdapter
+        recyclerViewHistory.layoutManager = LinearLayoutManager(this)
+        recyclerViewHistory.setHasFixedSize(true)
     }
 }

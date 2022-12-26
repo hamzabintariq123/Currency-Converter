@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andela.currencyconverter.data.db.model.ConverterData
 import com.andela.currencyconverter.data.repository.currency_history.CurrencyHistoryRepository
-import com.andela.currencyconverter.utils.extensions.dateFormatForMonth
+import com.andela.currencyconverter.utils.extensions.dateFormat
 import com.andela.currencyconverter.utils.extensions.toString
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,9 +24,9 @@ class DetailsViewModel @Inject constructor(
 
         val calendar = Calendar.getInstance()
 
-        val startDate = calendar.time.toString(dateFormatForMonth.toString())
+        val startDate = calendar.time.toString(dateFormat)
         calendar.add(Calendar.DATE,lastThreeDays)
-        val endDate = calendar.time.toString(dateFormatForMonth.toString())
+        val endDate = calendar.time.toString(dateFormat)
 
         viewModelScope.launch {
             historyList = currencyHistoryRepository.fetch(endDate, startDate)

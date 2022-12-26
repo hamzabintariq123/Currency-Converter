@@ -10,6 +10,7 @@ val formatMonth = SimpleDateFormat("yyyy/MM")
 val formatMonthOnly = SimpleDateFormat("MM")
 val formatYear = SimpleDateFormat("yyyy")
 
+val dateFormat = "yyyy-MM-dd"
 
 /**
  * Pattern: yyyy-MM-dd HH:mm:ss

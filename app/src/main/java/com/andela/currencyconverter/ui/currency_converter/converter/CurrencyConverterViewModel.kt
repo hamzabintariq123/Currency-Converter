@@ -23,7 +23,7 @@ class CurrencyConverterViewModel @Inject constructor(
     val resultFrom: MutableLiveData<Double> = MutableLiveData<Double>().apply { postValue(1.0) }
     val resultTo: MutableLiveData<Double> = MutableLiveData<Double>().apply { postValue(1.0) }
 
-    val result : MutableLiveData<Double> = MutableLiveData()
+    val result: MutableLiveData<Double> = MutableLiveData()
 
     private var _uiState = MutableLiveData<CurrencyConverterUiState>()
     var uiStateLiveData: LiveData<CurrencyConverterUiState> = _uiState
@@ -33,24 +33,24 @@ class CurrencyConverterViewModel @Inject constructor(
 
     fun convertCurrency(from: String, to: String, amount: Double, isFrom: Boolean) {
         _uiState.postValue(LoadingState)
+
+        if (from == to) {
+            _uiState.postValue(ErrorState("Same currency Selected"))
+            result.postValue(amount)
+        }
+
         viewModelScope.launch {
             convertCurrencyUsecase(from, to, amount).collect { dataState ->
                 when (dataState) {
                     is DataState.Success -> {
                         _uiState.postValue(ContentState)
                         _currencyConvertedResponse.postValue(dataState.data)
-
+                        saveDataToLocalDb(dataState.data)
                         result.postValue(dataState.data.result)
-                        val data = ConverterData(from = dataState.data.query.from,
-                            to = dataState.data.query.to,
-                            amount = dataState.data.query.amount.toString(),
-                            result = dataState.data.result.toString(),
-                            date = dataState.data.date)
-                        currencyHistoryRepository.insert(data)
 
-                        if (!isFrom){
+                        if (!isFrom) {
                             resultFrom.postValue(dataState.data.result)
-                        }else{
+                        } else {
                             resultTo.postValue(dataState.data.result)
                         }
                     }
@@ -60,6 +60,19 @@ class CurrencyConverterViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    fun saveDataToLocalDb(dataState: CurrencyConvertedResponse) {
+        val data = ConverterData(
+            from = dataState.query.from,
+            to = dataState.query.to,
+            amount = dataState.query.amount.toString(),
+            result = dataState.result.toString(),
+            date = dataState.date
+        )
+        viewModelScope.launch {
+            currencyHistoryRepository.insert(data)
         }
     }
 }

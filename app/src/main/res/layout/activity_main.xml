@@ -77,6 +77,16 @@
             app:layout_constraintStart_toEndOf="@+id/exchangeValues"
             app:layout_constraintTop_toBottomOf="@+id/convertTo" />
 
+        <Button
+            android:id="@+id/buttonDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/details"
+            android:layout_marginTop="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/convertToEdt" />
+
         <ProgressBar
             android:id="@+id/progressLogin"
             android:layout_width="@dimen/_80sdp"

@@ -1,10 +1,8 @@
 package com.andela.currencyconverter.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
@@ -37,7 +35,7 @@ class BindableSpinnerAdapter(
     }
 
 
-    data class SpinnerItem(val text: String)
+    data class SpinnerItem(var text: String)
 
 
     companion object {

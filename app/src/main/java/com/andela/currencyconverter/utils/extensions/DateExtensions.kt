@@ -5,7 +5,7 @@ import java.util.*
 
 val dateFormatForDisplaying =
     SimpleDateFormat("dd-M-yyyy hh:mm:ss a")
-val dateFormatForMonth = SimpleDateFormat("dd - MMM - yyyy")
+val dateFormatForMonth = SimpleDateFormat("yyyy-MM-dd")
 val formatMonth = SimpleDateFormat("yyyy/MM")
 val formatMonthOnly = SimpleDateFormat("MM")
 val formatYear = SimpleDateFormat("yyyy")

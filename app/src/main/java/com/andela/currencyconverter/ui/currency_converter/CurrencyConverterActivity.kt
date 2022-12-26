@@ -5,6 +5,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.andela.currencyconverter.R
+import com.andela.currencyconverter.adapter.BindableSpinnerAdapter
+import com.andela.currencyconverter.adapter.BindableSpinnerAdapter.Companion.setCurrentSelection
 import com.andela.currencyconverter.databinding.ActivityMainBinding
 import com.andela.currencyconverter.ui.currency_converter.converter.CurrencyConverterViewModel
 import com.andela.currencyconverter.ui.currency_converter.symbols.CurrencySymbolsViewModel

@@ -7,18 +7,23 @@ import androidx.lifecycle.viewModelScope
 import com.andela.currencyconverter.data.DataState
 import com.andela.currencyconverter.data.remote.responses.currency_converter.CurrencyConvertedResponse
 import com.andela.currencyconverter.data.usecase.converter.ConvertCurrencyUsecase
+import com.andela.currencyconverter.data.db.model.ConverterData
+import com.andela.currencyconverter.data.repository.currency_history.CurrencyHistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class CurrencyConverterViewModel @Inject constructor(
-    private val convertCurrencyUsecase: ConvertCurrencyUsecase
+    private val convertCurrencyUsecase: ConvertCurrencyUsecase,
+    private val currencyHistoryRepository: CurrencyHistoryRepository
 ) : ViewModel() {
 
     val resultFrom: MutableLiveData<Double> = MutableLiveData<Double>().apply { postValue(1.0) }
     val resultTo: MutableLiveData<Double> = MutableLiveData<Double>().apply { postValue(1.0) }
+
+    val result : MutableLiveData<Double> = MutableLiveData()
 
     private var _uiState = MutableLiveData<CurrencyConverterUiState>()
     var uiStateLiveData: LiveData<CurrencyConverterUiState> = _uiState
@@ -34,6 +39,15 @@ class CurrencyConverterViewModel @Inject constructor(
                     is DataState.Success -> {
                         _uiState.postValue(ContentState)
                         _currencyConvertedResponse.postValue(dataState.data)
+
+                        result.postValue(dataState.data.result)
+                        val data = ConverterData(from = dataState.data.query.from,
+                            to = dataState.data.query.to,
+                            amount = dataState.data.query.amount.toString(),
+                            result = dataState.data.result.toString(),
+                            date = dataState.data.date)
+                        currencyHistoryRepository.insert(data)
+
                         if (!isFrom){
                             resultFrom.postValue(dataState.data.result)
                         }else{

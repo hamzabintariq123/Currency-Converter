@@ -1,8 +1,8 @@
 package com.andela.currencyconverter.utils
 
 object AppConstants {
-    object API {
 
-
+    object Constants {
+        const val DB_NAME = "CurrencyConverterDb"
     }
 }

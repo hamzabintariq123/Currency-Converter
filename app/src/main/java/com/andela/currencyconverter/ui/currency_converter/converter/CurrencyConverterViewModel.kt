@@ -63,7 +63,7 @@ class CurrencyConverterViewModel @Inject constructor(
         }
     }
 
-    fun saveDataToLocalDb(dataState: CurrencyConvertedResponse) {
+    private fun saveDataToLocalDb(dataState: CurrencyConvertedResponse) {
         val data = ConverterData(
             from = dataState.query.from,
             to = dataState.query.to,

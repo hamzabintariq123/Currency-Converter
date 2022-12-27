@@ -4,10 +4,27 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.andela.currencyconverter.data.db.model.ConverterData
+import com.andela.currencyconverter.data.sections.ContentItem
+import com.andela.currencyconverter.data.sections.RecyclerViewItem
+import com.andela.currencyconverter.data.sections.SectionItem
 import com.andela.currencyconverter.databinding.ItemHistoryDetailsBinding
+import com.andela.currencyconverter.databinding.ItemSectionHeaderBinding
 
-class HistoryRecyclerViewAdapter(private val converterDataList: MutableList<ConverterData>): RecyclerView.Adapter<HistoryRecyclerViewAdapter.HistoryViewHolder>() {
-
+const val VIEW_TYPE_SECTION = 1
+const val VIEW_TYPE_ITEM = 2
+class HistoryRecyclerViewAdapter(converterDataList: MutableList<ConverterData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var datesList = ArrayList<String>()
+    var dataSet = ArrayList<RecyclerViewItem>()
+    init {
+        converterDataList.sortByDescending { it.date }
+        datesList = converterDataList.distinctBy { it.date }.map { it.date } as ArrayList<String>
+        for (i in 0 until datesList.size){
+           dataSet.add(SectionItem(datesList[i]))
+            converterDataList.forEach { if (it.date == datesList[i]){
+                dataSet.add(ContentItem(it))
+            } }
+        }
+    }
     class HistoryViewHolder(
         private val binding: ItemHistoryDetailsBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -16,18 +33,43 @@ class HistoryRecyclerViewAdapter(private val converterDataList: MutableList<Conv
         }
     }
 
-    private lateinit var binding: ItemHistoryDetailsBinding
+    class SectionViewHolder(
+        private val binding: ItemSectionHeaderBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(title: String) {
+            binding.dateObj = title
+        }
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
+    private lateinit var binding: ItemHistoryDetailsBinding
+    private lateinit var bindingSectionHeader: ItemSectionHeaderBinding
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (viewType == VIEW_TYPE_SECTION) {
+            bindingSectionHeader = ItemSectionHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return SectionViewHolder(bindingSectionHeader)
+        }
         binding = ItemHistoryDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return HistoryViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        val largeNews = converterDataList[position]
-        holder.bind(largeNews)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = dataSet[position]
+        if (holder is SectionViewHolder && item is SectionItem) {
+            holder.bind(item.title)
+        }
+        if (holder is HistoryViewHolder && item is ContentItem) {
+            holder.bind(item.converterData)
+        }
     }
 
-    override fun getItemCount() = converterDataList.size
+    override fun getItemViewType(position: Int): Int {
+        if (dataSet[position] is SectionItem) {
+            return VIEW_TYPE_SECTION
+        }
+        return VIEW_TYPE_ITEM
+    }
+
+    override fun getItemCount() = dataSet.size
 
 }

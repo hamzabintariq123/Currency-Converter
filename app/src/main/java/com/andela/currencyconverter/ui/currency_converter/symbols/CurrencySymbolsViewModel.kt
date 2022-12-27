@@ -11,9 +11,9 @@ import com.andela.currencyconverter.data.DataState
 import com.andela.currencyconverter.data.remote.responses.currency_symbols.CurrencySymbolsResponse
 import com.andela.currencyconverter.data.usecase.converter.CurrencySymbolsUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class CurrencySymbolsViewModel @Inject constructor(

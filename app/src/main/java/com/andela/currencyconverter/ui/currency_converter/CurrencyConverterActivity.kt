@@ -1,5 +1,6 @@
 package com.andela.currencyconverter.ui.currency_converter
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +9,7 @@ import com.andela.currencyconverter.R
 import com.andela.currencyconverter.databinding.ActivityMainBinding
 import com.andela.currencyconverter.ui.currency_converter.converter.CurrencyConverterViewModel
 import com.andela.currencyconverter.ui.currency_converter.symbols.CurrencySymbolsViewModel
+import com.andela.currencyconverter.ui.details.DetailsActivity
 import com.andela.currencyconverter.utils.extensions.debounce
 import com.andela.currencyconverter.utils.gone
 import com.andela.currencyconverter.utils.showSnack
@@ -30,6 +32,7 @@ class CurrencyConverterActivity : AppCompatActivity() {
 
     private var fromItem = 0
     private var toItem = 0
+    private var debounceDelay = 500L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +47,7 @@ class CurrencyConverterActivity : AppCompatActivity() {
         symbolsViewModel.getCurrencySymbols()
         initObservations()
 
-        binding.convertFromEdt.debounce(500L) { text ->
+        binding.convertFromEdt.debounce(debounceDelay) { text ->
             try {
                 if ((text?.length ?: 0) > 0 && binding.convertFromEdt.hasFocus()) {
                     callConvertCurrency(
@@ -59,7 +62,7 @@ class CurrencyConverterActivity : AppCompatActivity() {
             }
         }
 
-        binding.convertToEdt.debounce(500L) { text ->
+        binding.convertToEdt.debounce(debounceDelay) { text ->
             try {
                 if ((text?.length ?: 0) > 0 && binding.convertToEdt.hasFocus()) {
                     callConvertCurrency(
@@ -84,7 +87,10 @@ class CurrencyConverterActivity : AppCompatActivity() {
                 symbolsViewModel.selectedToItem.text,
                 true
             )
+        }
 
+        binding.buttonDetails.setOnClickListener{
+            startActivity(Intent(this@CurrencyConverterActivity, DetailsActivity::class.java))
         }
     }
 

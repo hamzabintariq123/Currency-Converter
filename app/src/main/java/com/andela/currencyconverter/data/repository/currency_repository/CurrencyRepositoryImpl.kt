@@ -8,8 +8,8 @@ import com.andela.currencyconverter.data.remote.responses.currency_symbols.Curre
 import com.andela.currencyconverter.data.remote.responses.currency_symbols.Symbols
 import com.andela.currencyconverter.data.remote.services.CurrencyApiService
 import com.andela.currencyconverter.utils.StringUtils
-import com.serengeti.getihub.data.remote.onExceptionSuspend
-import com.serengeti.getihub.data.remote.onSuccessSuspend
+import com.andela.currencyconverter.data.remote.onExceptionSuspend
+import com.andela.currencyconverter.data.remote.onSuccessSuspend
 import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow

@@ -30,7 +30,6 @@ class CurrencySymbolsViewModel @Inject constructor(
     var uiStateLiveData: LiveData<CurrencySymbolsUiState> = _uiState
 
     private var _currencySymbolsResponse = MutableLiveData<CurrencySymbolsResponse>()
-    var currencySymbolsLiveData: LiveData<CurrencySymbolsResponse> = _currencySymbolsResponse
 
     fun getCurrencySymbols() {
         _uiState.postValue(LoadingState)

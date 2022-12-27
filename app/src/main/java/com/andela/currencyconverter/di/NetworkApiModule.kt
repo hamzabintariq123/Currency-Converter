@@ -2,8 +2,7 @@ package com.andela.currencyconverter.di
 
 import com.andela.currencyconverter.BuildConfig
 import com.andela.currencyconverter.data.remote.services.CurrencyApiService
-import com.andela.currencyconverter.utils.AppConstants
-import com.serengeti.getihub.data.remote.ApiResponseCallAdapterFactory
+import com.andela.currencyconverter.data.remote.ApiResponseCallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

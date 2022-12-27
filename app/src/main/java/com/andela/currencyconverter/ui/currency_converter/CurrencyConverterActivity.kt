@@ -28,7 +28,7 @@ class CurrencyConverterActivity : AppCompatActivity() {
 
     private val converterViewModel: CurrencyConverterViewModel by viewModels()
     private val symbolsViewModel: CurrencySymbolsViewModel by viewModels()
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     private var fromItem = 0
     private var toItem = 0

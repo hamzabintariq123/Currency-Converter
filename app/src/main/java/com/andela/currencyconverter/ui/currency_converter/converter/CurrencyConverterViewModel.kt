@@ -5,19 +5,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andela.currencyconverter.data.DataState
-import com.andela.currencyconverter.data.remote.responses.currency_converter.CurrencyConvertedResponse
-import com.andela.currencyconverter.data.usecase.converter.ConvertCurrencyUsecase
 import com.andela.currencyconverter.data.db.model.ConverterData
+import com.andela.currencyconverter.data.remote.responses.currency_converter.CurrencyConvertedResponse
 import com.andela.currencyconverter.data.repository.currency_history.CurrencyHistoryRepository
+import com.andela.currencyconverter.data.usecase.converter.ConvertCurrencyUsecase
+import com.andela.currencyconverter.utils.StringUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @HiltViewModel
 class CurrencyConverterViewModel @Inject constructor(
     private val convertCurrencyUsecase: ConvertCurrencyUsecase,
-    private val currencyHistoryRepository: CurrencyHistoryRepository
+    private val currencyHistoryRepository: CurrencyHistoryRepository,
+    private val stringUtils: StringUtils
 ) : ViewModel() {
 
     val resultFrom: MutableLiveData<Double> = MutableLiveData<Double>().apply { postValue(1.0) }
@@ -35,7 +37,7 @@ class CurrencyConverterViewModel @Inject constructor(
         _uiState.postValue(LoadingState)
 
         if (from == to) {
-            _uiState.postValue(ErrorState("Same currency Selected"))
+            _uiState.postValue(ErrorState(stringUtils.sameCurrencyError()))
             result.postValue(amount)
         }
 
